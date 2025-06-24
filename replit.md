@@ -113,6 +113,7 @@ The Blood Bank Management System is a full-stack web application built with Pyth
 ```
 Changelog:
 - June 24, 2025. Initial setup
+- June 24, 2025. Fixed AWS DynamoDB backend integration - all forms now store data in cloud
 ```
 
 ## User Preferences
