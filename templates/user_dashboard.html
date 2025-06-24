@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - Blood Bank Management System{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 mb-0">
+        <i class="fas fa-tachometer-alt text-danger me-2"></i>
+        Welcome, {{ current_user.name }}
+    </h1>
+    <div>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-home me-1"></i>Back to Home
+        </a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+            <i class="fas fa-sign-out-alt me-1"></i>Logout
+        </a>
+    </div>
+</div>
+
+<!-- User Profile Card -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-user me-2"></i>Profile Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="profile-info">
+                    <div class="info-item mb-2">
+                        <strong><i class="fas fa-user me-2 text-muted"></i>Name:</strong>
+                        <span>{{ current_user.name }}</span>
+                    </div>
+                    <div class="info-item mb-2">
+                        <strong><i class="fas fa-envelope me-2 text-muted"></i>Email:</strong>
+                        <span>{{ current_user.email }}</span>
+                    </div>
+                    <div class="info-item mb-2">
+                        <strong><i class="fas fa-tint me-2 text-muted"></i>Blood Group:</strong>
+                        <span class="badge bg-danger">{{ current_user.blood_group }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong><i class="fas fa-phone me-2 text-muted"></i>Mobile:</strong>
+                        <span>{{ current_user.mobile }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="col-md-8">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-hand-holding-medical fa-2x mb-2"></i>
+                        <h3 class="mb-0">{{ stats.total_requests if stats else 0 }}</h3>
+                        <p class="mb-0">Blood Requests</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-heart fa-2x mb-2"></i>
+                        <h3 class="mb-0">{{ stats.total_donations if stats else 0 }}</h3>
+                        <p class="mb-0">Donations Scheduled</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <h3 class="mb-0">{{ stats.pending_requests if stats else 0 }}</h3>
+                        <p class="mb-0">Pending Requests</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Cards -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-plus-circle fa-3x text-danger mb-3"></i>
+                <h5 class="card-title">Request Blood</h5>
+                <p class="card-text">Submit a request for blood units from hospitals and blood banks.</p>
+                <a href="{{ url_for('user.blood_request') }}" class="btn btn-danger">
+                    <i class="fas fa-plus me-2"></i>Make Request
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-calendar-plus fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Schedule Donation</h5>
+                <p class="card-text">Schedule a blood donation appointment at your preferred location.</p>
+                <a href="{{ url_for('user.donation_schedule') }}" class="btn btn-success">
+                    <i class="fas fa-calendar-plus me-2"></i>Schedule Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+{% if not show_history %}
+<div class="row">
+    <!-- Recent Blood Requests -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Recent Blood Requests
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if recent_requests %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hospital</th>
+                                    <th>Blood Group</th>
+                                    <th>Units</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in recent_requests %}
+                                <tr>
+                                    <td>{{ request.hospital }}</td>
+                                    <td><span class="badge bg-danger">{{ request.blood_group }}</span></td>
+                                    <td>{{ request.units }}</td>
+                                    <td>
+                                        {% if request.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif request.status == 'fulfilled' %}
+                                            <span class="badge bg-success">Fulfilled</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">No blood requests yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Donations -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-heart me-2"></i>Recent Donations
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if recent_donations %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hospital</th>
+                                    <th>Blood Group</th>
+                                    <th>Units</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for donation in recent_donations %}
+                                <tr>
+                                    <td>{{ donation.hospital }}</td>
+                                    <td><span class="badge bg-danger">{{ donation.blood_group }}</span></td>
+                                    <td>{{ donation.units }}</td>
+                                    <td><span class="badge bg-info">{{ donation.status.title() }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">No donations scheduled yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View All History Button -->
+<div class="text-center mt-4">
+    <a href="{{ url_for('user.history') }}" class="btn btn-outline-primary">
+        <i class="fas fa-list me-2"></i>View Complete History
+    </a>
+</div>
+
+{% else %}
+<!-- Complete History View -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Complete History
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-tabs" id="historyTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="requests-tab" data-bs-toggle="tab" data-bs-target="#requests-pane" type="button" role="tab">
+                            <i class="fas fa-hand-holding-medical me-1"></i>Blood Requests
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="donations-tab" data-bs-toggle="tab" data-bs-target="#donations-pane" type="button" role="tab">
+                            <i class="fas fa-heart me-1"></i>Donations
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="historyTabContent">
+                    <!-- Blood Requests Tab -->
+                    <div class="tab-pane fade show active" id="requests-pane" role="tabpanel">
+                        {% if all_requests %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Hospital</th>
+                                            <th>Blood Group</th>
+                                            <th>Units</th>
+                                            <th>Mobile</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for request in all_requests %}
+                                        <tr>
+                                            <td>{{ request.created_at[:10] }}</td>
+                                            <td>{{ request.hospital }}</td>
+                                            <td><span class="badge bg-danger">{{ request.blood_group }}</span></td>
+                                            <td>{{ request.units }}</td>
+                                            <td>{{ request.mobile }}</td>
+                                            <td>
+                                                {% if request.status == 'pending' %}
+                                                    <span class="badge bg-warning">Pending</span>
+                                                {% elif request.status == 'fulfilled' %}
+                                                    <span class="badge bg-success">Fulfilled</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No blood requests found.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Donations Tab -->
+                    <div class="tab-pane fade" id="donations-pane" role="tabpanel">
+                        {% if all_donations %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Hospital</th>
+                                            <th>Blood Group</th>
+                                            <th>Units</th>
+                                            <th>Mobile</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for donation in all_donations %}
+                                        <tr>
+                                            <td>{{ donation.created_at[:10] }}</td>
+                                            <td>{{ donation.hospital }}</td>
+                                            <td><span class="badge bg-danger">{{ donation.blood_group }}</span></td>
+                                            <td>{{ donation.units }}</td>
+                                            <td>{{ donation.mobile }}</td>
+                                            <td><span class="badge bg-info">{{ donation.status.title() }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No donations scheduled yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Back to Dashboard Button -->
+        <div class="text-center mt-3">
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

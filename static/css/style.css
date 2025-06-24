@@ -1,0 +1,423 @@
+/* Blood Bank Management System Custom Styles */
+
+:root {
+    --primary-red: #dc3545;
+    --secondary-red: #b02a37;
+    --light-red: #f8d7da;
+    --success-green: #198754;
+    --warning-orange: #fd7e14;
+    --info-blue: #0dcaf0;
+    --dark-gray: #343a40;
+    --light-gray: #f8f9fa;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    padding-top: 76px; /* Account for fixed navbar */
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-red);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-red);
+}
+
+/* Navigation Styles */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    min-height: calc(100vh - 76px - 80px); /* Viewport height minus navbar and footer */
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
+    border-radius: 15px;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+}
+
+.hero-icon {
+    text-align: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card .card-body {
+    padding: 2rem;
+}
+
+.feature-icon {
+    margin-bottom: 1rem;
+}
+
+/* Form Styles */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.form-control-lg, .form-select-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, var(--primary-red), var(--secondary-red));
+    border: none;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(45deg, var(--secondary-red), #8b1e2b);
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, var(--success-green), #146c43);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #146c43, #0f5132);
+    transform: translateY(-1px);
+}
+
+/* Dashboard Styles */
+.profile-info .info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.profile-info .info-item strong {
+    color: var(--dark-gray);
+    min-width: 120px;
+}
+
+/* Statistics Cards */
+.card.bg-primary, .card.bg-success, .card.bg-warning, .card.bg-info {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+.card.bg-primary {
+    --primary-color: #0d6efd;
+    --secondary-color: #0b5ed7;
+}
+
+.card.bg-success {
+    --primary-color: #198754;
+    --secondary-color: #146c43;
+}
+
+.card.bg-warning {
+    --primary-color: #fd7e14;
+    --secondary-color: #e5650e;
+}
+
+.card.bg-info {
+    --primary-color: #0dcaf0;
+    --secondary-color: #31d2f2;
+}
+
+/* Table Styles */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--light-gray);
+    border: none;
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.table-responsive {
+    border-radius: 8px;
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.85em;
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert-info {
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #055160;
+    border-left: 4px solid var(--info-blue);
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--light-gray);
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-footer {
+    border-top: 2px solid var(--light-gray);
+    border-radius: 0 0 12px 12px;
+}
+
+/* Tab Styles */
+.nav-tabs {
+    border-bottom: 2px solid var(--light-gray);
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: var(--primary-red);
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom: 3px solid var(--primary-red);
+    color: var(--primary-red);
+    background-color: transparent;
+}
+
+/* Footer Styles */
+footer {
+    background: linear-gradient(135deg, var(--dark-gray) 0%, #212529 100%);
+    color: white;
+    margin-top: auto;
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 15px;
+        text-align: center;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 2rem;
+    }
+    
+    .hero-icon {
+        margin-top: 2rem;
+    }
+    
+    .profile-info .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .profile-info .info-item strong {
+        margin-bottom: 0.25rem;
+        min-width: auto;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .hero-section {
+        padding: 30px 10px;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar, .btn, footer {
+        display: none !important;
+    }
+    
+    .main-content {
+        padding-top: 0 !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+}
+
+/* Accessibility Improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles for better accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--primary-red);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid var(--dark-gray) !important;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .hero-icon {
+        animation: none;
+    }
+}

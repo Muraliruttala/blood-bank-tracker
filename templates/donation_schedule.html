@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Donation - Blood Bank Management System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white text-center py-3">
+                <h3 class="mb-0">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    Schedule Blood Donation
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" novalidate>
+                    <div class="mb-3">
+                        <label for="hospital" class="form-label">
+                            <i class="fas fa-hospital me-1"></i>Hospital/Donation Center
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="hospital" name="hospital" 
+                               placeholder="Enter hospital or donation center name" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="blood_group" class="form-label">
+                                    <i class="fas fa-tint me-1"></i>Your Blood Group
+                                </label>
+                                <select class="form-select form-select-lg" id="blood_group" name="blood_group" required>
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+" {% if current_user.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                                    <option value="A-" {% if current_user.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                                    <option value="B+" {% if current_user.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                                    <option value="B-" {% if current_user.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                                    <option value="AB+" {% if current_user.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                                    <option value="AB-" {% if current_user.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                                    <option value="O+" {% if current_user.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                                    <option value="O-" {% if current_user.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="units" class="form-label">
+                                    <i class="fas fa-calculator me-1"></i>Units to Donate
+                                </label>
+                                <input type="number" class="form-control form-control-lg" id="units" name="units" 
+                                       min="1" max="5" value="1" required>
+                                <div class="form-text">Typically 1 unit per donation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="mobile" class="form-label">
+                            <i class="fas fa-phone me-1"></i>Contact Mobile Number
+                        </label>
+                        <input type="tel" class="form-control form-control-lg" id="mobile" name="mobile" 
+                               placeholder="Enter your mobile number" value="{{ current_user.mobile }}" required>
+                    </div>
+                    
+                    <!-- Donation Guidelines -->
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>Donation Guidelines
+                        </h6>
+                        <ul class="mb-2">
+                            <li>You must be 18-65 years old and weigh at least 50kg</li>
+                            <li>You should be in good health and well-rested</li>
+                            <li>Eat a good meal and drink plenty of fluids before donating</li>
+                            <li>Wait at least 8 weeks between whole blood donations</li>
+                        </ul>
+                        <small class="text-muted">
+                            <strong>Note:</strong> The donation center will conduct a brief health screening before donation.
+                        </small>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-heart me-2"></i>Schedule Donation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="text-center mt-3">
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-primary me-2">
+                <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-1"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Benefits of Blood Donation -->
+<div class="row mt-5">
+    <div class="col-lg-10 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light text-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-heart me-2 text-danger"></i>
+                    Benefits of Blood Donation
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-heartbeat fa-2x text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6>Health Benefits</h6>
+                                <p class="mb-0 text-muted">
+                                    Regular blood donation can help reduce iron levels, lower cardiovascular risk, 
+                                    and provide free health screening.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-users fa-2x text-success"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6>Save Lives</h6>
+                                <p class="mb-0 text-muted">
+                                    One donation can save up to three lives. Your contribution directly helps 
+                                    patients in need of blood transfusions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-clock fa-2x text-info"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6>Quick Process</h6>
+                                <p class="mb-0 text-muted">
+                                    The entire donation process takes about 45-60 minutes, with the actual 
+                                    blood collection taking only 8-10 minutes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6>Safe & Sterile</h6>
+                                <p class="mb-0 text-muted">
+                                    All equipment is sterile and used only once. There's no risk of infection 
+                                    from donating blood.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

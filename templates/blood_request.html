@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Request - Blood Bank Management System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-danger text-white text-center py-3">
+                <h3 class="mb-0">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Request Blood Units
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" novalidate>
+                    <div class="mb-3">
+                        <label for="hospital" class="form-label">
+                            <i class="fas fa-hospital me-1"></i>Hospital/Blood Bank
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="hospital" name="hospital" 
+                               placeholder="Enter hospital or blood bank name" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="blood_group" class="form-label">
+                                    <i class="fas fa-tint me-1"></i>Blood Group Required
+                                </label>
+                                <select class="form-select form-select-lg" id="blood_group" name="blood_group" required>
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="units" class="form-label">
+                                    <i class="fas fa-calculator me-1"></i>Number of Units
+                                </label>
+                                <input type="number" class="form-control form-control-lg" id="units" name="units" 
+                                       min="1" max="10" placeholder="e.g., 2" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="mobile" class="form-label">
+                            <i class="fas fa-phone me-1"></i>Contact Mobile Number
+                        </label>
+                        <input type="tel" class="form-control form-control-lg" id="mobile" name="mobile" 
+                               placeholder="Enter your mobile number" required>
+                    </div>
+                    
+                    <!-- Important Information -->
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>Important Information
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Blood requests are subject to availability and medical approval</li>
+                            <li>You will be contacted within 24 hours about your request status</li>
+                            <li>Emergency requests should be made directly to the hospital</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Blood Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="text-center mt-3">
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-primary me-2">
+                <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-1"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Compatibility Information -->
+<div class="row mt-5">
+    <div class="col-lg-10 mx-auto">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0 text-center">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Blood Group Compatibility Chart
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-danger">
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>Can Donate To</th>
+                                <th>Can Receive From</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-danger">A+</span></td>
+                                <td>A+, AB+</td>
+                                <td>A+, A-, O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">A-</span></td>
+                                <td>A+, A-, AB+, AB-</td>
+                                <td>A-, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">B+</span></td>
+                                <td>B+, AB+</td>
+                                <td>B+, B-, O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">B-</span></td>
+                                <td>B+, B-, AB+, AB-</td>
+                                <td>B-, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">AB+</span></td>
+                                <td>AB+</td>
+                                <td>All blood groups</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">AB-</span></td>
+                                <td>AB+, AB-</td>
+                                <td>A-, B-, AB-, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">O+</span></td>
+                                <td>A+, B+, AB+, O+</td>
+                                <td>O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">O-</span></td>
+                                <td>All blood groups</td>
+                                <td>O-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

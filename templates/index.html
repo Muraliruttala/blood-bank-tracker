@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Blood Bank Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section bg-gradient-danger text-white text-center py-5 rounded-3 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">
+                <i class="fas fa-heartbeat text-light"></i>
+                Blood Bank Management
+            </h1>
+            <p class="lead mb-4">
+                Connecting donors with those in need. Save lives through organized blood donation and management.
+            </p>
+            {% if not is_logged_in %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-4 me-md-2">
+                        <i class="fas fa-user-plus me-2"></i>Register Now
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                </div>
+            {% else %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    {% if current_user.role == 'admin' %}
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-light btn-lg px-4">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('user.dashboard') }}" class="btn btn-light btn-lg px-4">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            <div class="hero-icon">
+                <i class="fas fa-hand-holding-heart fa-10x text-light opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon text-danger mb-3">
+                    <i class="fas fa-users fa-3x"></i>
+                </div>
+                <h5 class="card-title">For Donors</h5>
+                <p class="card-text">
+                    Register as a donor, schedule donations, and track your contribution to saving lives.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon text-danger mb-3">
+                    <i class="fas fa-hospital fa-3x"></i>
+                </div>
+                <h5 class="card-title">For Hospitals</h5>
+                <p class="card-text">
+                    Request blood units, manage inventory, and ensure timely availability for patients.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon text-danger mb-3">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                </div>
+                <h5 class="card-title">Analytics</h5>
+                <p class="card-text">
+                    Track donations, requests, and maintain comprehensive blood bank statistics.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row mt-5">
+    <div class="col-lg-8 mx-auto">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0 text-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Why Donate Blood?
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6>Save Lives</h6>
+                                <p class="mb-0 text-muted">One donation can save up to three lives</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6>Health Benefits</h6>
+                                <p class="mb-0 text-muted">Regular donation improves cardiovascular health</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6>Community Service</h6>
+                                <p class="mb-0 text-muted">Give back to your community in a meaningful way</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6>Free Health Check</h6>
+                                <p class="mb-0 text-muted">Get basic health screening with each donation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="text-center mt-5">
+    <div class="bg-light p-4 rounded-3">
+        <h3 class="text-danger mb-3">Ready to make a difference?</h3>
+        <p class="mb-3">Join our community of life-savers today!</p>
+        {% if not is_logged_in %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-danger btn-lg">
+                <i class="fas fa-heart me-2"></i>Get Started
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
