@@ -78,8 +78,7 @@ def create_tables_if_not_exist():
                         'KeySchema': [
                             {'AttributeName': 'email', 'KeyType': 'HASH'}
                         ],
-                        'Projection': {'ProjectionType': 'ALL'},
-                        'BillingMode': 'PAY_PER_REQUEST'
+                        'Projection': {'ProjectionType': 'ALL'}
                     }
                 ],
                 BillingMode='PAY_PER_REQUEST'
@@ -108,8 +107,7 @@ def create_tables_if_not_exist():
                         'KeySchema': [
                             {'AttributeName': 'user_id', 'KeyType': 'HASH'}
                         ],
-                        'Projection': {'ProjectionType': 'ALL'},
-                        'BillingMode': 'PAY_PER_REQUEST'
+                        'Projection': {'ProjectionType': 'ALL'}
                     }
                 ],
                 BillingMode='PAY_PER_REQUEST'
@@ -138,8 +136,7 @@ def create_tables_if_not_exist():
                         'KeySchema': [
                             {'AttributeName': 'user_id', 'KeyType': 'HASH'}
                         ],
-                        'Projection': {'ProjectionType': 'ALL'},
-                        'BillingMode': 'PAY_PER_REQUEST'
+                        'Projection': {'ProjectionType': 'ALL'}
                     }
                 ],
                 BillingMode='PAY_PER_REQUEST'

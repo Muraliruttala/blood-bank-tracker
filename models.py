@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 import logging
+import boto3
+import boto3.dynamodb.conditions
 from aws_config import get_dynamodb_client, get_dynamodb_resource, create_tables_if_not_exist, USERS_TABLE, REQUESTS_TABLE, DONATIONS_TABLE, INVENTORY_TABLE
 from botocore.exceptions import ClientError
 
@@ -64,31 +66,36 @@ def get_user_by_email(email):
     if dynamodb:
         try:
             table = dynamodb.Table(USERS_TABLE)
+            
+            # First check if table exists
+            table.load()
+            
             response = table.query(
                 IndexName='email-index',
-                KeyConditionExpression='email = :email',
-                ExpressionAttributeValues={':email': email}
+                KeyConditionExpression=boto3.dynamodb.conditions.Key('email').eq(email)
             )
             
             if response['Items']:
                 user = response['Items'][0]
-                logging.info(f"Found user by email: {email}")
+                logging.info(f"Found user by email: {email} in DynamoDB")
                 return user
             else:
-                logging.info(f"No user found with email: {email}")
+                logging.info(f"No user found with email: {email} in DynamoDB")
                 return None
                 
-        except ClientError as e:
+        except Exception as e:
             logging.error(f"DynamoDB error getting user by email: {e}")
             # Fall back to mock data on error
             for user in mock_data['users'].values():
                 if user['email'] == email:
+                    logging.info(f"Found user by email: {email} in mock data")
                     return user
             return None
     else:
         # Use mock data
         for user in mock_data['users'].values():
             if user['email'] == email:
+                logging.info(f"Found user by email: {email} in mock data")
                 return user
     
     return None
@@ -101,38 +108,43 @@ def create_user(user_data):
         try:
             table = dynamodb.Table(USERS_TABLE)
             
+            # Ensure table exists first
+            table.load()
+            
             # Generate unique user ID
             user_id = str(uuid.uuid4())
             user_data['id'] = user_id
             user_data['created_at'] = datetime.now().isoformat()
             
             # Put item in DynamoDB
-            table.put_item(Item=user_data)
+            response = table.put_item(Item=user_data)
             
-            logging.info(f"Created user in DynamoDB: {user_id}")
+            logging.info(f"Successfully created user in DynamoDB: {user_id}, Response: {response}")
             return user_id
             
-        except ClientError as e:
+        except Exception as e:
             logging.error(f"DynamoDB error creating user: {e}")
             # Fall back to mock data on error
             user_id = id_counter['users']
             id_counter['users'] += 1
             
-            user_data['id'] = user_id
+            user_data['id'] = str(user_id)
             user_data['created_at'] = datetime.now().isoformat()
             mock_data['users'][user_id] = user_data
             
-            return user_id
+            logging.info(f"Created user in mock data: {user_id}")
+            return str(user_id)
     else:
         # Use mock data
         user_id = id_counter['users']
         id_counter['users'] += 1
         
-        user_data['id'] = user_id
+        user_data['id'] = str(user_id)
         user_data['created_at'] = datetime.now().isoformat()
         mock_data['users'][user_id] = user_data
         
-        return user_id
+        logging.info(f"Created user in mock data: {user_id}")
+        return str(user_id)
 
 def create_blood_request(request_data):
     """Create a blood request"""
@@ -141,6 +153,7 @@ def create_blood_request(request_data):
     if dynamodb:
         try:
             table = dynamodb.Table(REQUESTS_TABLE)
+            table.load()  # Check if table exists
             
             # Generate unique request ID
             request_id = str(uuid.uuid4())
@@ -151,32 +164,34 @@ def create_blood_request(request_data):
             request_data['user_id'] = str(request_data['user_id'])
             
             # Put item in DynamoDB
-            table.put_item(Item=request_data)
+            response = table.put_item(Item=request_data)
             
-            logging.info(f"Created blood request in DynamoDB: {request_id}")
+            logging.info(f"Successfully created blood request in DynamoDB: {request_id}, Response: {response}")
             return request_id
             
-        except ClientError as e:
+        except Exception as e:
             logging.error(f"DynamoDB error creating blood request: {e}")
             # Fall back to mock data on error
             request_id = id_counter['requests']
             id_counter['requests'] += 1
             
-            request_data['id'] = request_id
+            request_data['id'] = str(request_id)
             request_data['created_at'] = datetime.now().isoformat()
             mock_data['blood_requests'][request_id] = request_data
             
-            return request_id
+            logging.info(f"Created blood request in mock data: {request_id}")
+            return str(request_id)
     else:
         # Use mock data
         request_id = id_counter['requests']
         id_counter['requests'] += 1
         
-        request_data['id'] = request_id
+        request_data['id'] = str(request_id)
         request_data['created_at'] = datetime.now().isoformat()
         mock_data['blood_requests'][request_id] = request_data
         
-        return request_id
+        logging.info(f"Created blood request in mock data: {request_id}")
+        return str(request_id)
 
 def create_donation_schedule(donation_data):
     """Create a donation schedule"""
@@ -185,6 +200,7 @@ def create_donation_schedule(donation_data):
     if dynamodb:
         try:
             table = dynamodb.Table(DONATIONS_TABLE)
+            table.load()  # Check if table exists
             
             # Generate unique donation ID
             donation_id = str(uuid.uuid4())
@@ -195,32 +211,34 @@ def create_donation_schedule(donation_data):
             donation_data['user_id'] = str(donation_data['user_id'])
             
             # Put item in DynamoDB
-            table.put_item(Item=donation_data)
+            response = table.put_item(Item=donation_data)
             
-            logging.info(f"Created donation schedule in DynamoDB: {donation_id}")
+            logging.info(f"Successfully created donation schedule in DynamoDB: {donation_id}, Response: {response}")
             return donation_id
             
-        except ClientError as e:
+        except Exception as e:
             logging.error(f"DynamoDB error creating donation: {e}")
             # Fall back to mock data on error
             donation_id = id_counter['donations']
             id_counter['donations'] += 1
             
-            donation_data['id'] = donation_id
+            donation_data['id'] = str(donation_id)
             donation_data['created_at'] = datetime.now().isoformat()
             mock_data['donations'][donation_id] = donation_data
             
-            return donation_id
+            logging.info(f"Created donation in mock data: {donation_id}")
+            return str(donation_id)
     else:
         # Use mock data
         donation_id = id_counter['donations']
         id_counter['donations'] += 1
         
-        donation_data['id'] = donation_id
+        donation_data['id'] = str(donation_id)
         donation_data['created_at'] = datetime.now().isoformat()
         mock_data['donations'][donation_id] = donation_data
         
-        return donation_id
+        logging.info(f"Created donation in mock data: {donation_id}")
+        return str(donation_id)
 
 def get_user_blood_requests(user_id, limit=None):
     """Get blood requests for a user"""
@@ -230,22 +248,23 @@ def get_user_blood_requests(user_id, limit=None):
     if dynamodb:
         try:
             table = dynamodb.Table(REQUESTS_TABLE)
+            table.load()  # Check if table exists
+            
             response = table.query(
                 IndexName='user_id-index',
-                KeyConditionExpression='user_id = :user_id',
-                ExpressionAttributeValues={':user_id': user_id},
+                KeyConditionExpression=boto3.dynamodb.conditions.Key('user_id').eq(user_id),
                 ScanIndexForward=False  # Sort by newest first
             )
             
             requests = response['Items']
-            logging.info(f"Found {len(requests)} blood requests for user {user_id}")
+            logging.info(f"Found {len(requests)} blood requests for user {user_id} in DynamoDB")
             
             if limit:
                 requests = requests[:limit]
             
             return requests
             
-        except ClientError as e:
+        except Exception as e:
             logging.error(f"DynamoDB error getting user blood requests: {e}")
             # Fall back to mock data
             pass
@@ -262,6 +281,7 @@ def get_user_blood_requests(user_id, limit=None):
     if limit:
         requests = requests[:limit]
     
+    logging.info(f"Found {len(requests)} blood requests for user {user_id} in mock data")
     return requests
 
 def get_user_donations(user_id, limit=None):
