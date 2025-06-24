@@ -2,6 +2,7 @@ import os
 import logging
 from flask import Flask, render_template, session, redirect, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
+from aws_config import create_tables_if_not_exist
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -10,6 +11,13 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "blood-bank-secret-key-2024")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+# Initialize DynamoDB tables on startup
+try:
+    create_tables_if_not_exist()
+    logging.info("DynamoDB tables initialization completed")
+except Exception as e:
+    logging.warning(f"DynamoDB table initialization failed: {e} - Will use mock data")
 
 # Import blueprints
 from auth import auth_bp

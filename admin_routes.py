@@ -59,7 +59,7 @@ def view_requests():
                          blood_group_filter=blood_group_filter,
                          search_query=search_query)
 
-@admin_bp.route('/fulfill-request/<int:request_id>')
+@admin_bp.route('/fulfill-request/<request_id>')
 @admin_required
 def fulfill_request(request_id):
     """Mark a blood request as fulfilled"""
