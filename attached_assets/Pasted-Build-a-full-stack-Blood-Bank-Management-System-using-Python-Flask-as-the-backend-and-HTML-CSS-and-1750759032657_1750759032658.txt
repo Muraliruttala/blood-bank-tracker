@@ -1,0 +1,57 @@
+Build a full-stack Blood Bank Management System using Python Flask as the backend and HTML, CSS, and JavaScript as the frontend.
+
+Use the following structure and features:
+
+🔐 Authentication:
+- A clean landing page with a navigation bar and buttons for "Login" and "Register".
+- Registration has two roles:
+  - User: name, email, blood group, mobile, password, confirm password
+  - Admin: name, email, admin ID, mobile, blood group, hospital, password, confirm password
+- Login page for both user and admin; redirect to dashboards based on roles.
+
+👤 User Dashboard:
+- Use Bootstrap cards and a grid layout.
+- Profile section displaying user information in a card format.
+- Blood Request form (hospital, blood group, units, mobile)
+- Donation Schedule form (hospital, blood group, units, mobile)
+- Dashboard widgets/cards to show:
+  - Total blood requests made (e.g., 6)
+  - Total donations scheduled (e.g., 5)
+  - Pending requests count
+- Table for history of blood requests and donations
+- Add "Back to Home" button on every page
+
+🏥 Admin Dashboard:
+- Profile section in card view
+- Admin can:
+  - View all user blood requests in a table with status (Pending / Fulfilled)
+  - Mark requests as fulfilled (should update user and admin dashboards)
+  - View all donation schedules of users
+  - View and manage inventory (show 10 blood banks with details)
+- Include search and filter options for quick access
+
+☁ Cloud Integration:
+- Use AWS DynamoDB to store user data, blood requests, and schedules.
+- Use AWS S3 for optional document/image upload if needed.
+- Configure AWS credentials securely using boto3 in aws_config.py
+
+💻 Technology Stack:
+- Backend: Python Flask
+- Frontend: HTML, CSS, JavaScript
+- UI/UX: Bootstrap 5 (cards, navbars, forms, tables, modals)
+- Database: AWS DynamoDB
+- Storage: AWS S3
+- File Structure:
+  - templates/: all HTML files
+  - static/css: custom styles
+  - static/js: JavaScript code
+  - Flask routes in app.py or main.py
+
+✅ Notes:
+- All routes should use Flask Blueprints if code is modular.
+- Use session or JWT for user session handling.
+- Include validations and alerts for form input.
+- Add success/failure messages using Bootstrap alerts.
+- Every page must have a “Back to Home” button and logout option.
+
+Provide all backend and frontend code with clean UI design and responsive layout.
